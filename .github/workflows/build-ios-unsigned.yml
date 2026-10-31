@@ -34,12 +34,15 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      
       - name: Package IPA
         run: |
-          APP_PATH="$RUNNER_TEMP/BlueyDerivedData/Build/Products/Release-iphoneos/GooglyEyes.app"
+          APP_PATH="$RUNNER_TEMP/BlueyDerivedData/Build/Products/Release-iphoneos/Bluey.app"
 
           if [ ! -d "$APP_PATH" ]; then
-            echo "ERROR: GooglyEyes.app was not created"
+            echo "ERROR: Bluey.app was not found."
+            echo "Available application builds:"
+            find "$RUNNER_TEMP/BlueyDerivedData/Build/Products" -name "*.app" -print
             exit 1
           fi
 
@@ -49,6 +52,8 @@ jobs:
           cd "$RUNNER_TEMP"
           ditto -c -k --sequesterRsrc --keepParent \
             Payload Bluey-unsigned.ipa
+
+          echo "SUCCESS: Bluey-unsigned.ipa created"
 
       - name: Upload iPhone IPA
         uses: actions/upload-artifact@v4
