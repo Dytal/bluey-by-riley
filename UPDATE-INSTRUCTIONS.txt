@@ -1,0 +1,36 @@
+BLUEY LOCAL AI / VOICE / SCREEN MONITORING UPDATE
+
+This archive overlays the Windows host and iPhone PWA files. It does not include or replace your existing .github/workflows/build-ios-unsigned.yml file.
+
+APPLY THE UPDATE
+1. Extract this ZIP.
+2. Copy the included Windows, Web and .github folders plus README.md and PWA-QUICK-START.md into your existing bluey-by-riley repository folder. Allow matching files to be replaced.
+3. Keep your existing .github/workflows/build-ios-unsigned.yml unchanged.
+4. In GitHub Desktop, review the changes, commit them, and Push origin to Dytal/bluey-by-riley.
+5. In GitHub Settings > Pages, set Source to GitHub Actions if this is not already configured.
+6. In GitHub Actions, run Deploy Bluey iPhone web app. After it succeeds, refresh the installed PWA; the service worker cache is now v4.
+7. On Windows, quit Bluey from its system-tray menu, then restart it with Windows/run-bluey.bat.
+8. Start your local Qwen model server at http://127.0.0.1:8080/v1. In Bluey Windows, leave Model ID blank for Qwen auto-detection or enter the exact local model ID, then click Test connection.
+9. Run Windows/install-bluey-voice.bat once. The first voice use downloads the local Whisper base.en model.
+10. Install/start Cloudflare Tunnel as previously documented, press Start iPhone web access in Bluey Windows, then scan the NEW QR inside the installed iPhone PWA.
+
+WHAT'S INCLUDED
+- Typed chat using LocalAI/llama.cpp through an OpenAI-compatible request format (it does not call OpenAI).
+- Push-to-talk microphone recording on iPhone, sent through Bluey's encrypted link to Windows, transcribed locally by faster-whisper, answered by the local model, and spoken using iPhone speech synthesis.
+- Explicit opt-in AI monitoring of the Windows desktop. It captures immediately and then every 60 seconds, analysed by a local vision-capable model. It stops when disabled, the phone disconnects, Windows locks, Bluey closes, or the local model fails.
+- One-shot Windows screen checks. Ordinary focus timers do not capture screenshots unless monitoring is separately enabled.
+
+MODEL CHOICE
+The Windows Model ID field can select any model exposed by the local inference server. Qwen is auto-detected by default. A locally hosted Google Gemma model can be selected by its exact local model ID if the server supports this API format and image inputs (for screen checks). Gemma is a separate model family, not Gemini or Google AI Studio.
+
+GEMINI / GOOGLE AI STUDIO
+No Gemini API / Google AI Studio integration is included. Google's current Gemini API Additional Terms require API users to be 18+ and prohibit API clients likely to be accessed by under-18s; UK API clients must use Paid Services. Do not work around this restriction or put a Gemini key into Bluey. Terms: https://ai.google.dev/gemini-api/terms
+
+PRIVACY LIMITS
+- AI monitoring captures the Windows desktop only, not the iPhone screen or other iPhone apps; it does not control the mouse or keyboard.
+- The configured local AI endpoint is restricted to loopback addresses. Screenshots are passed to the local model process on this PC, not a cloud model.
+- The Cloudflare Quick Tunnel is publicly reachable while running. Keep the QR private; it contains your pairing secret. Bluey payloads are end-to-end authenticated/encrypted. Quit Bluey/stop the tunnel when finished and use Forget this PC on shared phones.
+- The official demo link supplied by the project owner is included in the PWA footer: https://www.youtube.com/shorts/IEYzYopNGVQ. The video could not be loaded in the build environment, so exact frame-by-frame replication is not claimed.
+
+VERIFICATION
+13 Python tests passed; Python compileall and Node JavaScript syntax checks passed. Physical Windows/iPhone pairing, local vision inference and microphone recording still need testing on the target devices.

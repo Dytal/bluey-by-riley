@@ -1,5 +1,7 @@
 # Bluey
 
+> **Windows 11 host:** An initial Windows desktop host has been added in [`Windows/`](Windows/README.md). It is designed to pair with the existing iPhone app; the `iOS/` project remains unchanged. See the Windows guide for setup and current port limitations.
+
 Bluey is a little blueberry focus friend. Keep your iPhone sideways under your Mac monitor: his eyes follow your mouse, and his matching blue cursor appears when he has something to point out. Same character, animation, British personality, speech bubbles and cartoon chirp. No spoken voice output and no glow.
 
 ## Start focusing
@@ -104,3 +106,19 @@ The existing manual pointing, voice context, research cards, Codex controller an
 ## License
 
 Public domain under [the Unlicense](LICENSE). Do whatever you want with it.
+
+
+## iPhone without Xcode: Safari web app
+
+The `Web/` folder contains an account-free iPhone Safari companion. Publish it with `.github/workflows/deploy-bluey-pwa.yml` and follow `Windows/README.md` → “iPhone Safari PWA”. The web companion uses an encrypted WebSocket bridge through a temporary Cloudflare Quick Tunnel and does not require an Apple Developer account.
+
+
+## Local AI voice and screen monitoring (Safari PWA)
+
+The account-free iPhone PWA can use a local Qwen model exposed by LocalAI or llama.cpp at `http://127.0.0.1:8080/v1` (or another loopback endpoint). Configure the model ID in the Windows host settings, leaving it blank for Qwen auto-detection. Use `Windows/install-bluey-voice.bat` to install optional `faster-whisper` CPU speech recognition. The iPhone uses its own speech synthesis for spoken replies.
+
+AI screen monitoring is opt-in and off by default. It captures the Windows desktop every 60 seconds only while enabled, sends the screenshot only to the loopback model on the same PC, and stops on disable, phone disconnect, Windows lock, or host exit. Do not enable it while private information is visible.
+
+Gemini API / Google AI Studio integration is intentionally absent: Google's current Additional Terms require API users to be 18+ and prohibit API clients likely to be accessed by under-18s. UK API clients must use Paid Services. A locally hosted Google Gemma model may be selected by model ID if the local inference server supports it; Gemma is not Gemini or Google AI Studio. See https://ai.google.dev/gemini-api/terms.
+
+Official Bluey reference video provided by the project owner: https://www.youtube.com/shorts/IEYzYopNGVQ (not directly retrievable in this environment; the current PWA design follows the repository's existing styles).
